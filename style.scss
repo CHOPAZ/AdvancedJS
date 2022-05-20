@@ -1,0 +1,34 @@
+* {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    font-family: 'Lato', sans-serif;
+}
+
+.cart-button {
+    padding: 15px;
+    background: #F16D7F;
+    border-radius: 5px;
+    font-size: 14px;
+    line-height: 17px;
+    color: #FFFFFF;
+    font-family: inherit;
+    margin: 10px;
+}
+
+.goods-item {
+    width: 100px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+h3 {
+    padding-bottom: 3px;
+}
