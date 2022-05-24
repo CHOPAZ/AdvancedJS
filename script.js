@@ -5,26 +5,42 @@ const goods = [
   { title: 'Shoes', price: 250 },
 ];
 
-const renderGoodsItem = (item = {}) => {
-  const { title = '', price = '' } = item
-
-  return `
+class GoodsItem {
+  constructor ({ title = '', price = '' }){
+    this.title = title;
+    this.price = price; 
+  }
+  render() {
+  return`
     <div class="goods-item">
-      <h3>${title}</h3>
-      <p>${price}</p>
+      <h3>${this.title}</h3>
+      <p>${this.price}</p>
     </div>
   `
-};
+  }
+}
 
+class GoodsList {
+  fetchData() {
+    this.list = goods;
+  }
 
-const mapList = (list) => list.map(renderGoodsItem).join('');
+  costAllgoods () {
+    return goods.reduce((currentValue, {price}) => 
+    currentValue + price
+    , 0 ); 
+  }
 
-const writeHtml = (list) =>  document.querySelector('.goods-list').innerHTML = list;
+  render() {
+    const goodsList = this.list.map(item => {
+      const goodsItem = new GoodsItem(item);
+      return goodsItem.render() 
+    }).join('');
+    document.querySelector('.goods-list').innerHTML = goodsList;
+  }
+}
 
-
-const renderGoodsList = (list = []) => {
-  const mappedList = mapList(list);
-  writeHtml(mappedList);
-};
-
-renderGoodsList(goods);
+const goodsList = new GoodsList(goods);
+goodsList.fetchData();
+goodsList.render();
+goodsList.costAllgoods();
