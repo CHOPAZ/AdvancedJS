@@ -5,24 +5,48 @@ const goods = [
   { title: 'Shoes', price: 250 },
 ];
 
+const API_URL = "https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses";
+const RECEIVE_GOODS = `${API_URL}/catalogData.json`;
+const GET_BUSKET_GOODS = `${API_URL}/getBasket.json`;
+
+
+
+function service (url, callback) {
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', url);
+  
+   
+  xhr.onload = () => {
+    callback(JSON.parse(xhr.response));
+  }
+  
+  xhr.send();
+
+}
+
 class GoodsItem {
-  constructor ({ title = '', price = '' }){
-    this.title = title;
+  constructor ({ product_name = '', price = '' }){
+    this.product_name = product_name;
     this.price = price; 
   }
   render() {
   return`
     <div class="goods-item">
-      <h3>${this.title}</h3>
+      <h3>${this.product_name}</h3>
       <p>${this.price}</p>
     </div>
   `
   }
 }
 
+
 class GoodsList {
-  fetchData() {
-    this.list = goods;
+  list = [];
+  fetchData(callback) {
+    service(RECEIVE_GOODS, (data) => {
+      this.list = data;
+      callback();
+    });
   }
 
   costAllgoods () {
@@ -40,7 +64,20 @@ class GoodsList {
   }
 }
 
+class Basket {
+  list = [];
+  fetchData(callback) {
+    service(GET_BUSKET_GOODS, (data) => {
+      this.list = data;
+      callback();
+    });
+  }
+}
+
 const goodsList = new GoodsList(goods);
-goodsList.fetchData();
-goodsList.render();
-goodsList.costAllgoods();
+goodsList.fetchData(() => {
+  goodsList.render()
+});
+
+const basketList = new Basket();
+basketList.fetchData();

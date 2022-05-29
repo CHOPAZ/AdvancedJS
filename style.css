@@ -12,6 +12,8 @@ header {
   -ms-flex-pack: distribute;
       justify-content: space-around;
   background: #222222;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 h1 {
