@@ -49,3 +49,12 @@ h3 {
     padding-bottom: 10px;
     padding-top: 20px;
 }
+.actions {
+    display: flex;
+    justify-content: space-around;
+}
+
+.search-input {
+    height: 30px;
+    border-radius: 5px;
+}
