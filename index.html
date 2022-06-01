@@ -1,17 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
    <meta charset="UTF-8">
    <title>eShop</title>
-
+   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-<header>
-   <button class="cart-button" type="button">Корзина</button>
-</header>
-<main>
-   <div class="goods-list"></div>
-</main>
-<script src="script.js"></script>
+   <header>
+      <h1>eShop</h1>
+      <div class="actions">
+         <div class="search">
+            <input type="text" class="search-input">
+            <button class="cart-button search-button" type="button">Поиск</button>
+         </div>
+         <div class="basket">
+            <button class="cart-button basket-button" type="button">Корзина</button>
+         </div>
+      </div>
+   </header>
+   <main>
+      <div class="goods-list"></div>
+   </main>
+   <script src="script.js"></script>
 </body>
+
 </html>
