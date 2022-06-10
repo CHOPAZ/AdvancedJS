@@ -10,6 +10,53 @@ function service (url) {
 }
 
 window.onload = () => {
+  Vue.component('custom-button', {
+    template: `
+      <button class="cart-button" type="button" @click="$emit('click')">
+        <slot></slot>
+      </button>
+    `
+  })
+  Vue.component('good', {
+    props: [
+      'item'
+    ],
+    template: `
+      <div class="goods-item">
+        <h3>{{item.product_name}}</h3>
+        <p>{{item.price}}</p>
+      </div>
+    `
+  })
+  Vue.component('basket', { 
+    template: `
+      <div class="basket-list">
+        <div class="basket-card">
+          <div class="basket-card__header">
+            <h1 class="basket-card__header__title">Корзина</h1>
+            <div class="basket-card__header__delete-icon" @click="$emit('close')">
+            </div>
+          </div>
+          <div class="basket-card__content">
+            <div class="goods-list">
+              <slot></slot>
+            </div>
+          </div>
+        </div>
+      </div>
+    `
+  })
+  Vue.component('actions-input', {
+    template: `
+      <input 
+        type="text" 
+        class="search-input"
+        v-bind:value="iternalValue"
+        @input="$emit('input', $event.target.value)"
+        placeholder="Поиск">
+    `
+  })
+
   const app = new Vue({
     el: '#root',
     data: {

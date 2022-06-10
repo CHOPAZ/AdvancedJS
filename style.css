@@ -4,7 +4,7 @@ header { display: flex; justify-content: space-around; background: #222222; bord
 
 .title { color: #F16D7F; padding-top: 10px; }
 
-.cart-button { padding: 10px; background: #F16D7F; border-radius: 5px; font-size: 14px; line-height: 17px; color: #FFFFFF; margin: 10px; }
+.cart-button { padding: 10px; background: #F16D7F; border-radius: 5px; font-size: 14px; line-height: 17px; color: #FFFFFF; margin: 10px; cursor: pointer; }
 
 .goods-list { margin-top: 68px; display: flex; justify-content: center; }
 

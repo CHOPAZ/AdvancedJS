@@ -14,37 +14,20 @@
       <header>
          <h1 class="title">eShop {{costAllgoods}}</h1>
          <div class="actions">
-            <input type="text" class="search-input" v-model="searchValue" placeholder="Поиск">
+            <actions-input v-model="searchValue"></actions-input>
+
             <div class="basket">
-               <button class="cart-button basket-button" type="button" v-on:click="basketGoods">Корзина</button>
+               <custom-button @click="basketGoods">Корзина</custom-button>
             </div>
          </div>
       </header>
       <main>
          <div class="goods-list">
-            <div class="goods-item" v-for="item in filteredItems">
-               <h3>{{item.product_name}}</h3>
-               <p>{{item.price}}</p>
-            </div>
-         </div>
+            <good v-for="item in filteredItems" :item="item"></good>
       </main>
-      <div class="basket-list" v-if="isVisibleCard">
-         <div class="basket-card">
-            <div class="basket-card__header">
-               <h1 class="basket-card__header__title">Корзина</h1>
-               <div class="basket-card__header__delete-icon" v-on:click="basketGoods">
-               </div>
-            </div>
-            <div class="basket-card__content">
-               <div class="goods-list">
-                  <div class=" goods-item" v-for="item in bascketList">
-                     <h3>{{item.product_name}}</h3>
-                     <p>{{item.price}}</p>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
+      <basket v-if="isVisibleCard" @close="basketGoods">
+         <good v-for="item in bascketList" :item="item"></good>
+      </basket>
    </div>
 </body>
 
