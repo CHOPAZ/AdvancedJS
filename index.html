@@ -26,7 +26,6 @@
             <good v-for="item in filteredItems" :item="item"></good>
       </main>
       <basket v-if="isVisibleCard" @close="basketGoods">
-         <good v-for="item in bascketList" :item="item"></good>
       </basket>
    </div>
 </body>

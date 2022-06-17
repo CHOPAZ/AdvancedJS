@@ -1,6 +1,6 @@
-const API_URL = "https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses";
-const RECEIVE_GOODS = `${API_URL}/catalogData.json`;
-const GET_BUSKET_GOODS = `${API_URL}/getBasket.json`;
+const API_URL = "http://localhost:8000/";
+const RECEIVE_GOODS = `${API_URL}goods.json`;
+const GET_BUSKET_GOODS = `${API_URL}basket`;
 
 
 
@@ -29,6 +29,11 @@ window.onload = () => {
     `
   })
   Vue.component('basket', { 
+    data() {
+      return {
+        bascketList: []
+      }
+    },
     template: `
       <div class="basket-list">
         <div class="basket-card">
@@ -38,13 +43,17 @@ window.onload = () => {
             </div>
           </div>
           <div class="basket-card__content">
-            <div class="goods-list">
-              <slot></slot>
-            </div>
+            <basket-item v-for="item in bascketList" :item="item"></basket-item>
           </div>
         </div>
       </div>
-    `
+    `,
+    mounted() {
+      service(GET_BUSKET_GOODS).then((data) => {
+        this.bascketList = data;
+        return data;
+      })
+    }
   })
   Vue.component('actions-input', {
     template: `
@@ -56,6 +65,24 @@ window.onload = () => {
         placeholder="Поиск">
     `
   })
+  Vue.component('basket-item', {
+    props: [
+      'item'
+    ],
+    template: `
+      <div class="basket-item">
+        <div class="basket-item_goods">
+          <span class="basket-item__title">{{item.product_name}}</span>
+          <span class="basket-item__price">{{item.price}} р.</span>
+        </div>
+        <div class="basket-item__count">
+          <span> {{item.count}}шт.</span>
+          <button class="basket-item__button">Добавить</button>
+          <button class="basket-item__button">Удалить</button>
+        </div>
+      </div>
+    `
+  })
 
   const app = new Vue({
     el: '#root',
@@ -63,16 +90,11 @@ window.onload = () => {
       list: [],
       searchValue: '',
       isVisibleCard: false,
-      bascketList: []
     },
     mounted() {
       service(RECEIVE_GOODS).then((data) => {
         this.list = data;
         return data;
-      })
-      service(GET_BUSKET_GOODS).then((data) => {
-        this.bascketList = data.contents;
-        return data.contents;
       })
     },
     computed: {
