@@ -15,22 +15,12 @@ const readGoods = () => readFile(GOODS, 'utf-8')
   return JSON.parse(basketFile)
 })
 
-
-
-const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cors());
-app.use(express.static('public'));
-  
-app.get('/basket', (req, res) => {
- 
-
-  Promise.all([
+function getReformBasket() {
+  return Promise.all([
     readBasket(),
     readGoods()
   ]).then(([basketList, goodsList]) => {
-    return basketList.map ((basketItem) => {
+    const result = basketList.map ((basketItem) => {
       const goodsItem = goodsList.find(({ id_product: _goodsId}) => {
         return _goodsId === basketItem.id_product
       });
@@ -39,8 +29,52 @@ app.get('/basket', (req, res) => {
         ...goodsItem
       }
     })
-  }).then((result) => {
-    res.send(JSON.stringify(result))
+    return result
+  })
+};
+
+
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
+ 
+
+app.post('/goods', (res, req) => {
+  readBasket().then((basket) => {
+    const basketItem = basket.find(({ id_product: _id}) => _id === res.body.id)
+    if (!basketItem) {
+      basket.push({
+        id_product: res.body.id,
+        count: 1,
+      })
+    } else {
+      basket = basket.map((basketItem) => {
+        if (basketItem.id_product === res.body.id) {
+          return {
+            ...basketItem,
+            count: basketItem.count + 1
+          }
+        } else {
+          return basketItem
+        }
+      })
+    }
+    return writeFile(BASKET, JSON.stringify(basket)).then(() => {
+      return getReformBasket()
+    }).then((result) => {
+      req.send(result)
+    })
+    
+  })
+});
+
+app.get('/basket', (res, req) => {
+
+  getReformBasket().then((result) => {
+    req.send(JSON.stringify(result))
   })
 
 });

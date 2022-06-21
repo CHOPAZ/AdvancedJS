@@ -8,7 +8,7 @@ header { display: flex; justify-content: space-around; background: #222222; bord
 
 .goods-list { margin-top: 68px; display: flex; justify-content: center; }
 
-.goods-item { width: 200px; height: 300px; margin-left: 20px; border: 1px solid black; border-radius: 5px; font-size: 20px; line-height: 17px; text-align: center; }
+.goods-item { width: 200px; height: 300px; margin-left: 20px; border: 1px solid black; border-radius: 5px; font-size: 20px; line-height: 17px; text-align: center; display: grid; grid-template-rows: min-content auto min-content; }
 
 h3 { padding-bottom: 10px; padding-top: 20px; }
 

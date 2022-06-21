@@ -1,12 +1,26 @@
 const API_URL = "http://localhost:8000/";
 const RECEIVE_GOODS = `${API_URL}goods.json`;
 const GET_BUSKET_GOODS = `${API_URL}basket`;
+const GOODS = `${API_URL}goods`;
 
 
 
 function service (url) {
   return fetch(url)
   .then((res) => res.json());
+}
+
+function serviceWhithBody(url = "", method = "POST", body = {}) {
+  return fetch (
+    url,
+    {
+      method,
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8'
+      },
+      body: JSON.stringify(body)
+    }
+  ).then((res) => res.json());
 }
 
 window.onload = () => {
@@ -25,8 +39,18 @@ window.onload = () => {
       <div class="goods-item">
         <h3>{{item.product_name}}</h3>
         <p>{{item.price}}</p>
+        <div>
+          <custom-button @click="addGood">Добавить</custom-button>
+        </div>
       </div>
-    `
+    `,
+    methods: {
+      addGood() {
+        serviceWhithBody(GOODS, "POST", {
+          id: this.item.id_product
+        })
+      }
+    }
   })
   Vue.component('basket', { 
     data() {
@@ -43,7 +67,11 @@ window.onload = () => {
             </div>
           </div>
           <div class="basket-card__content">
-            <basket-item v-for="item in bascketList" :item="item"></basket-item>
+            <basket-item 
+            v-for="item in bascketList" 
+            :item="item"
+            @add="addGood"
+            ></basket-item>
           </div>
         </div>
       </div>
@@ -53,6 +81,15 @@ window.onload = () => {
         this.bascketList = data;
         return data;
       })
+    },
+    methods: {
+      addGood(id_product) {
+        serviceWhithBody(GOODS, "POST", {
+          id_product
+        }).then((data) => {
+          this.bascketList = data;
+        })
+      }
     }
   })
   Vue.component('actions-input', {
@@ -60,7 +97,6 @@ window.onload = () => {
       <input 
         type="text" 
         class="search-input"
-        v-bind:value="iternalValue"
         @input="$emit('input', $event.target.value)"
         placeholder="Поиск">
     `
@@ -77,7 +113,7 @@ window.onload = () => {
         </div>
         <div class="basket-item__count">
           <span> {{item.count}}шт.</span>
-          <button class="basket-item__button">Добавить</button>
+          <button class="basket-item__button" @click="$emit('add', item.id_product)">Добавить</button>
           <button class="basket-item__button">Удалить</button>
         </div>
       </div>
