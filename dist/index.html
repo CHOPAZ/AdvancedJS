@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <title>eShop</title>
+   <link rel="stylesheet" href="style.css">
+   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+   <script src="script.js"></script>
+<script defer src="script.js"></script></head>
+
+<body>
+   <div id="root">
+      <header>
+         <h1 class="title">eShop {{costAllgoods}}</h1>
+         <div class="actions">
+            <actions-input v-model="searchValue"></actions-input>
+
+            <div class="basket">
+               <custom-button @click="basketGoods">Корзина</custom-button>
+            </div>
+         </div>
+      </header>
+      <main>
+         <div class="goods-list">
+            <good v-for="item in filteredItems" :item="item"></good>
+      </main>
+      <basket v-if="isVisibleCard" @close="basketGoods">
+      </basket>
+   </div>
+</body>
+
+</html>
