@@ -20,7 +20,7 @@ function getReformBasket() {
     readBasket(),
     readGoods()
   ]).then(([basketList, goodsList]) => {
-    const result = basketList.map ((basketItem) => {
+    const result = basketList.map((basketItem) => {
       const goodsItem = goodsList.find(({ id_product: _goodsId}) => {
         return _goodsId === basketItem.id_product
       });
@@ -42,7 +42,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
  
 
-app.post('/goods', (res, req) => {
+app.post('/basket', (res, req) => {
   readBasket().then((basket) => {
     const basketItem = basket.find(({ id_product: _id}) => _id === res.body.id)
     if (!basketItem) {
@@ -62,6 +62,27 @@ app.post('/goods', (res, req) => {
         }
       })
     }
+    return writeFile(BASKET, JSON.stringify(basket)).then(() => {
+      return getReformBasket()
+    }).then((result) => {
+      req.send(result)
+    })
+    
+  })
+});
+
+app.delete('/basket', (res, req) => {
+  readBasket().then((basket) => {
+      basket = basket.map((basketItem) => {
+        if (basketItem.id_product === res.body.id) {
+          return {
+            ...basketItem,
+            count: basketItem.count - 1
+          } 
+        } else {
+          return basketItem
+        }
+      }).filter((basket) => basket.count > 0)
     return writeFile(BASKET, JSON.stringify(basket)).then(() => {
       return getReformBasket()
     }).then((result) => {
